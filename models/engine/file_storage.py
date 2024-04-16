@@ -64,6 +64,6 @@ class FileStorage:
         if obj is not None:
             cls = obj.__class__.__name__
             key = cls + "." + obj.id
-            FileStorage.__objects.pop(key)
-            print("object {} deleted".format(key))
-            self.save()
+            if key in FileStorage.__objects.keys():
+                FileStorage.__objects.pop(key)
+                self.save()
