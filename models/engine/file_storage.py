@@ -18,7 +18,7 @@ class FileStorage:
             for key, value in FileStorage.__objects.items():
                 obj_cls = key.split(".")[0]
                 if obj_cls == cls.__name__:
-                    theseobjs[key] = value
+                    theseobjs[key] = value.to_dict()
                     count += 1
             return theseobjs
 

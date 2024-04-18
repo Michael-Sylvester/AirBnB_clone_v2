@@ -27,7 +27,7 @@ class HBNBCommand(cmd.Cmd):
     types = {
              'number_rooms': int, 'number_bathrooms': int,
              'max_guest': int, 'price_by_night': int,
-             'latitude': float, 'longitude': float, 'name':str
+             'latitude': float, 'longitude': float, 'name': str
             }
 
     def preloop(self):
@@ -73,7 +73,7 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] == '{' and pline[-1] =='}'\
+                    if pline[0] == '{' and pline[-1] == '}'\
                             and type(eval(pline)) is dict:
                         _args = pline
                     else:
@@ -115,6 +115,8 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
+        import os
+
         params = args.split(" ")
         if not args:
             print("** class name missing **")
@@ -128,8 +130,9 @@ class HBNBCommand(cmd.Cmd):
                 key, value = param.split("=", 1)
                 if hasattr(new_instance, key):
                     if value[0] == '\"' and value[-1] == '\"':
-                        value = value[1:-1].replace("_", " ").replace('"', '\"')
-                    elif "." in  value:
+                        value = value[1:-1].replace("_", " ").replace(
+                            '"', '\"')
+                    elif "." in value:
                         try:
                             value = float(value)
                         except ValueError:
@@ -140,7 +143,8 @@ class HBNBCommand(cmd.Cmd):
                         except ValueError:
                             continue
                     setattr(new_instance, key, value)
-
+        if os.getenv('HBNB_TYPE_STORAGE') == 'db':
+            storage.new(new_instance)
         storage.save()
         print(new_instance.id)
         storage.save()
@@ -207,7 +211,7 @@ class HBNBCommand(cmd.Cmd):
         key = c_name + "." + c_id
 
         try:
-            del(storage.all()[key])
+            del (storage.all()[key])
             storage.save()
         except KeyError:
             print("** no instance found **")
@@ -219,18 +223,28 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, args):
         """ Shows all objects, or all objects of a class"""
+        import os
         print_list = []
-
+        all = {}
         if args:
             args = args.split(' ')[0]  # remove possible trailing args
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
+
+            if os.getenv('HBNB_TYPE_STORAGE') == 'db':
+                all = storage.all(args)
+            else:
+                all = storage._FileStorage__objects
+            for k, v in all.items():
                 if k.split('.')[0] == args:
-                    print_list.append(str(v))
+                    print_list.append(v)
         else:
-            for k, v in storage._FileStorage__objects.items():
+            if os.getenv('HBNB_TYPE_STORAGE') == 'db':
+                all = storage.all()
+            else:
+                all = storage._FileStorage__objects
+            for k, v in all.items():
                 print_list.append(str(v))
 
         print(print_list)
@@ -339,6 +353,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
