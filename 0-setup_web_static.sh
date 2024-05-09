@@ -1,4 +1,4 @@
-#!/usr/bin/env  bash
+#!/usr/bin/env bash
 #Install Nginx is it is not installed and configure the files.
 # Check if Nginx is installed
 if ! [ -x "$(command -v nginx)" ]; then
