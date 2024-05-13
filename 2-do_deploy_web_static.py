@@ -58,6 +58,7 @@ def do_deploy(archive_path):
         print("An error occurred:", e)
         return False
 
+
 def do_pack():
     """
     Generates a .tgz archive from the contents of the web_static folder.
