@@ -7,6 +7,8 @@ import os
 
 # Define the list of web servers
 env.hosts = ['54.160.115.226', '100.25.139.174']
+env.key_filename = '~/.ssh/0-RSA_public_key'
+env.user = 'ubuntu'
 
 
 def do_deploy(archive_path):
@@ -36,7 +38,7 @@ def do_deploy(archive_path):
 
         # Delete the symbolic link /data/web_static/current
         current_link = '/data/web_static/current'
-        run('rm -f {}'.format(current_link))
+        run('if [ -L {} ]; then rm {}; fi'.format(current_link, current_link))
 
         # Create a new symbolic link for the new version
         run('ln -s {} {}'.format(release_folder, current_link))
