@@ -30,18 +30,18 @@ def do_deploy(archive_path):
         archive_filename = os.path.basename(archive_path)
         release_folder = '/data/web_static/releases/{}'.format(
             archive_filename[:-4])
-        run('mkdir -p {}'.format(release_folder))
-        run('tar -xzf /tmp/{} -C {}'.format(archive_filename, release_folder))
+        run('sudo mkdir -p {}'.format(release_folder))
+        run('sudo tar -xzf /tmp/{} -C {}'.format(archive_filename, release_folder))
 
         # Delete the archive from the web servers
-        run('rm /tmp/{}'.format(archive_filename))
+        run('sudo rm /tmp/{}'.format(archive_filename))
 
         # Delete the symbolic link /data/web_static/current
         current_link = '/data/web_static/current'
-        run('if [ -L {} ]; then rm {}; fi'.format(current_link, current_link))
+        run('if [ -L {} ]; then sud rm {}; fi'.format(current_link, current_link))
 
         # Create a new symbolic link for the new version
-        run('ln -s {} {}'.format(release_folder, current_link))
+        run('sudo ln -s {} {}'.format(release_folder, current_link))
 
         print("New version deployed successfully.")
         return True
