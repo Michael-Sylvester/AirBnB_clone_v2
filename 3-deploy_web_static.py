@@ -18,12 +18,19 @@ def deploy():
     Returns:
             The value of the function do_deploy()
     """
-    archive_location = do_pack()
+    archive_path = do_pack()
 
-    if archive_location is None:
+    # If archive is None, return False
+    if not archive_path:
+        print("No archive created. Deployment failed.")
         return False
 
-    return do_deploy(archive_location)
+    # Deploy the archive to each server
+    for host in env.hosts:
+        if not do_deploy(archive_path, host):
+            return False
+
+    return True
 
 
 def do_deploy(archive_path):
