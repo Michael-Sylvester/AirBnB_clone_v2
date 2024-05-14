@@ -20,8 +20,7 @@ def deploy():
     """
     archive_location = do_pack()
 
-    if not archive_location:
-        print("No archive created. Deployment failed.")
+    if archive_location is None:
         return False
 
     return do_deploy(archive_location)
