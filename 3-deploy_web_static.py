@@ -12,27 +12,6 @@ env.key_filename = '~/.ssh/0-RSA_public_key'
 env.user = 'ubuntu'
 
 
-def deploy():
-    """
-    Deploys an archive to a webservers web01 and web02
-    Returns:
-            The value of the function do_deploy()
-    """
-    archive_path = do_pack()
-
-    # If archive is None, return False
-    if not archive_path:
-        print("No archive created. Deployment failed.")
-        return False
-
-    # Deploy the archive to each server
-    for host in env.hosts:
-        if not do_deploy(archive_path, host):
-            return False
-
-    return True
-
-
 def do_deploy(archive_path):
     """
     Distributes an archive to web servers.
@@ -101,3 +80,18 @@ def do_pack():
     except Exception as e:
         print("An error occurred:", e)
         return None
+
+
+def deploy():
+            """
+    Deploys an archive to a webservers web01 and web02
+    Returns:
+            The value of the function do_deploy()
+    """
+    archive_path = do_pack()
+
+    # If archive is None, return False
+    if archive_path is None:
+        return False
+
+    return do_deploy(archive_path)
