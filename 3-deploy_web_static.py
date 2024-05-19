@@ -83,7 +83,7 @@ def do_pack():
 
 
 def deploy():
-            """
+    """
     Deploys an archive to a webservers web01 and web02
     Returns:
             The value of the function do_deploy()
