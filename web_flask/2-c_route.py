@@ -24,12 +24,13 @@ def hbnb_page():
     """
     return 'HBNB'
 
+
 @app.route('/c/<text>', strict_slashes=False)
 def c_page(text):
     """
     Routs traffic to display text on the c page
     """
-    text  = text.replace('_', ' ')
+    text = text.replace('_', ' ')
     return 'C {}'.format(text)
 
 
