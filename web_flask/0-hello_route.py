@@ -1,9 +1,18 @@
+#!/usr/bin/python3
+"""
+Python module for manipulating the content of a website
+using the flask module
+"""
 from flask import Flask, url_for
 
 app = Flask(__name__)
 
-@app.route('/', strict_slashes =False)
+
+@app.route('/', strict_slashes=False)
 def hello():
+    """
+    Routs traffic to the root of the website
+    """
     return 'Hello HBNB!'
 
 
