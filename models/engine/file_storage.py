@@ -67,3 +67,8 @@ class FileStorage:
             if key in FileStorage.__objects.keys():
                 FileStorage.__objects.pop(key)
                 self.save()
+
+
+    def close(self):
+        """Deserialse  JSON file to objects"""
+        self.reload()
